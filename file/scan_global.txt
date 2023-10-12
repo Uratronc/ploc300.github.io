@@ -1,0 +1,13 @@
+# Nmap 7.94 scan initiated Fri Sep 29 12:07:58 2023 as: nmap -p- -vv -oN scan_global.txt 192.168.56.102
+Nmap scan report for vtcsec (192.168.56.102)
+Host is up, received arp-response (0.00041s latency).
+Scanned at 2023-09-29 12:07:58 CEST for 18s
+Not shown: 65532 closed tcp ports (reset)
+PORT   STATE SERVICE REASON
+21/tcp open  ftp     syn-ack ttl 64
+22/tcp open  ssh     syn-ack ttl 64
+80/tcp open  http    syn-ack ttl 64
+MAC Address: 08:00:27:7A:FA:4F (Oracle VirtualBox virtual NIC)
+
+Read data files from: /usr/bin/../share/nmap
+# Nmap done at Fri Sep 29 12:08:16 2023 -- 1 IP address (1 host up) scanned in 18.31 seconds
