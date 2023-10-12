@@ -136,7 +136,7 @@ cat /etc/shadow
 ### 3.2. Atteinte de l'objectif 2
 *Rappel: L'attaquant peut-il usurper l'identité du compte administrateur ?*
 
-> En executant la commande id nous pouvons voir que nous somme root. Nous allons donc pouvoir usurper l'identité du compte administrateur.
+> En exécutant la commande id, nous pouvons voir que nous sommes root. Nous allons donc pouvoir usurper l’identité du compte administrateur.
 
 ```bash
 id
@@ -144,7 +144,7 @@ id
 
 *uid=0(root) gid=0(root) groups=0(root),65534(nogroup)*
 
-***Ce qui signifie que nous somme root et que nous usuperons l'identité du compte administrateur.***
+***Ce qui signifie que nous sommes root et que nous usuperons l'identité du compte administrateur.***
 
 ### 3.3. Atteinte de l'objectif 3
 *Rappel: L'attaquant peut-il bloquer l'accès a l'administrateur ?*
@@ -161,40 +161,40 @@ passwd marlinspike
 
 ***Ce qui signifie que nous pouvons bloquer l'accès a l'administrateur.***
 
-## Etape 4: Atteinte des objectifs 4 et 5
+## Étape 4: Atteinte des objectifs 4 et 5
 
 > Les étapes étant en rapport avec le site web nous allons utiliser le service http pour atteindre les objectifs.
 
 ### 4.1. Découverte du site web
 
-> En arrivant sur le site web nous tombons sur une page quasiment vide
+> En arrivant sur le site web, nous tombons sur une page quasiment vide.
 
 ![Site web](./image/site_web_accueil.png)
 
-> Mais en nous rapelant de notre scan nmap nous savons qu'il existe une partie cacher du site dans le repertoir /secret. Nous allons donc essayer d'y accéder.
+> Mais en nous rappelant notre scan nmap, nous savons qu’il existe une partie cachée du site dans le répertoire /secret. Nous allons donc essayer d’y accéder.
 
 ![Site web](./image/site_web_secret.png)
 
-> Nous arrivons maintenant sur un blog wordpress. Mais pour le moments nous n'avons pas la possibilité de modifier le contenu du site web. Nous allons donc essayer de trouver un moyen d'accéder a l'interface d'administration, pour cela nous allons simplement utiliser le boutons login de la page qui nous renvoie vers /secret/wp-login.php.
+> Nous arrivons maintenant sur un blog WordPress. Mais pour le moment, nous n’avons pas la possibilité de modifier le contenu du site web. Nous allons ainsi essayer de trouver un moyen d’accéder à l’interface d’administration, pour cela, nous allons simplement utiliser le bouton login de la page qui nous renvoie vers /secret/wp-login.php.
 
 ![Site web](./image/site_web_login.png)
 
-> En cherchant sur internet on peut découvrir que le login par défaut est admin. Nous allons donc utiliser wpscan pour trouver le mot de passe.
+> En cherchant sur internet, on peut découvrir que le login par défaut est admin. Nous allons donc utiliser wpscan pour trouver le mot de passe.
 
 ```bash
 wpscan --url http://192.168.56.102/secret/wp-admin -U admin -P /usr/share/wordlists/rockyou.txt
 ```
 
-**Wpscan nous a trouver le mot de passe du compte admin: admin**
+**Wpscan nous a trouvé le mot de passe du compte admin: admin**
 
 ### 4.2. Atteinte de l'objectif 4
 *Rappel: L'attaquant peut-il modifier le contenu du site web ?*
 
-> Nous allons maintenant nous connecter a l'interface d'administration du site web avec le compte admin et le mot de passe admin.
+> Nous allons maintenant nous connecter à l'interface d'administration du site web avec le compte admin et le mot de passe admin.
 
 ![Site web](./image/site_web_admin.png)
 
-> Nous arrivons maintenant sur l'interface d'administration du site web. Nous allons donc pouvoir modifier le contenu du site web.
+> Nous arrivons maintenant sur l'interface d'administration du site web. Nous allons donc pouvoir modifié le contenu du site web.
 
 ![Site web](./image/site_web_admin_interface.png)
 
@@ -209,18 +209,18 @@ wpscan --url http://192.168.56.102/secret/wp-admin -U admin -P /usr/share/wordli
 ***Ce qui signifie que nous pouvons modifier le contenu du site web.***
 
 ### 4.3. Atteinte de l'objectif 5
-*Rappel: L'attaquant peut-il bloquer l'accès a l'administrateur a l'outil de conception de site web ?*
+*Rappel: L’attaquant peut-il bloquer l’accès à l’administrateur à l’outil de conception de site web ?*
 
-> Nous allons maintenant essayer de bloquer l'accès a l'interface d'administration du site web. Pour cela nous allons tous simplement changer le mot de passe du compte admin.
+> Nous allons maintenant essayer de bloquer l’accès à l’interface d’administration du site web. Pour cela, nous allons tous simplement changer le mot de passe du compte admin.
 
 ![Site web](./image/site_web_admin_modif_mdp.png)
 
-> Nous pouvons maintenant voir que nous ne pouvons plus nous connecter a l'interface d'administration du site web.
+> Nous pouvons maintenant voir que nous ne pouvons plus nous connecter à l'interface d'administration du site web.
 
 ![Site web](./image/site_web_admin_bloquer.png)
 
-***Ce qui signifie que nous pouvons bloquer l'accès a l'administrateur a l'outil de conception de site web.***
+***Ce qui signifie que nous pouvons bloquer l’accès à l’administrateur à l’outil de conception de site web.***
 
 ## Etape 5: Conclusion
 
-> Nous avons pu voir que la machine cible était très vulnérable. Nous avons pu accéder aux fichiers du système d'exploitation, usurper l'identité du compte administrateur, bloquer l'accès a l'administrateur, modifier le contenu du site web et bloquer l'accès a l'administrateur a l'outil de conception de site web.
+> Nous avons pu voir que la machine cible était très vulnérable. Nous avons pu accéder aux fichiers du système d’exploitation, usurper l’identité du compte administrateur, bloquer l’accès à l’administrateur, modifier le contenu du site web et bloquer l’accès à l’administrateur à l’outil de conception de site web.
