@@ -222,19 +222,4 @@ hydra -l admin -P /usr/share/wordlists/rockyou.txt -e nsr http-get://192.168.56.
 
 ## Etape 5: Conclusion
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+> Nous avons pu voir que la machine cible était très vulnérable. Nous avons pu accéder aux fichiers du système d'exploitation, usurper l'identité du compte administrateur, bloquer l'accès a l'administrateur, modifier le contenu du site web et bloquer l'accès a l'administrateur a l'outil de conception de site web.
