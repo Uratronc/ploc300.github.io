@@ -1,4 +1,5 @@
-# Mettre un titre
+# Livrable 1
+*JOUET Malo & PENCRANE Alexis*
 
 ## Rappel des objectifs
 
