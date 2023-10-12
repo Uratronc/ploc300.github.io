@@ -186,6 +186,42 @@ hydra -l admin -P /usr/share/wordlists/rockyou.txt -e nsr http-get://192.168.56.
 
 **Hydra nous a trouver le mot de passe du compte admin: admin**
 
+### 4.2. Atteinte de l'objectif 4
+*Rappel: L'attaquant peut-il modifier le contenu du site web ?*
+
+> Nous allons maintenant nous connecter a l'interface d'administration du site web avec le compte admin et le mot de passe admin.
+
+![Site web](./image/site_web_admin.png)
+
+> Nous arrivons maintenant sur l'interface d'administration du site web. Nous allons donc pouvoir modifier le contenu du site web.
+
+![Site web](./image/site_web_admin_interface.png)
+
+> Nous allons maintenant modifier le contenu du site web pour y mettre un message.
+
+![Site web](./image/site_web_admin_modif.png)
+
+> Nous pouvons maintenant voir que le message a bien été modifier sur le site web.
+
+![Site web](./image/site_web_modif.png)
+
+***Ce qui signifie que nous pouvons modifier le contenu du site web.***
+
+### 4.3. Atteinte de l'objectif 5
+*Rappel: L'attaquant peut-il bloquer l'accès a l'administrateur a l'outil de conception de site web ?*
+
+> Nous allons maintenant essayer de bloquer l'accès a l'interface d'administration du site web. Pour cela nous allons tous simplement changer le mot de passe du compte admin.
+
+![Site web](./image/site_web_admin_modif_mdp.png)
+
+> Nous pouvons maintenant voir que nous ne pouvons plus nous connecter a l'interface d'administration du site web.
+
+![Site web](./image/site_web_admin_bloquer.png)
+
+***Ce qui signifie que nous pouvons bloquer l'accès a l'administrateur a l'outil de conception de site web.***
+
+## Etape 5: Conclusion
+
 
 
 
